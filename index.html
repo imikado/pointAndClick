@@ -1,0 +1,42 @@
+<html>
+  <head>
+    <title>Point and click</title>
+    <meta content="">
+    <link rel="stylesheet" type="text/css" href="css/main.css" media="screen" />
+		<script src="js/main.js" type="text/javascript"></script>
+
+		<script>
+		var bDebug=1;
+
+		window.onload=function(){ startIntro();};
+		</script>
+
+	</head>
+	<body>
+
+		<div id="intro" onclick="oGame.start()">
+
+		</div>
+
+		<div id="game">
+
+
+
+
+
+		</div>
+		<div id="inventory"></div>
+
+		<div id="myModal" class="modal">
+
+		<!-- Modal content -->
+			<div class="modal-content">
+			<a class="close" href="#" onclick="hideObject('myModal')">&times;</a>
+			<p id="myModalTxt"></p>
+			</div>
+
+		</div>
+
+
+	</body>
+</html>

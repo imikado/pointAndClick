@@ -15,32 +15,37 @@
 		{
 			"id":"salleSejour",
 			"background":"css/img/salleSejour.svg.png",
-			"listArea":[
+			"listRectArea":[
 				{
-					"x":400, "y":120, "width":20, "height":80, "on":{
-																											"verb":"aller",
-																											"action":{
-																													"funct":"loadRoom",
-																													"param":"comptoirAccueil"
-																												}
-																											}
+					"x":400, "y":120, "width":20, "height":80, "listOn":[
+																		{
+																			"verb":"aller",
+																			"action":{
+																					"funct":"loadRoom",
+																					"param":"comptoirAccueil"
+																				}
+																			}
+																											
+																		]
 				}
 			],
 			"listImage":[
 				{
-					"x":310, "y":365,  "src":"css/img/key.png", "id":"keySalleSejour", "on":{
-						"verb":"prendre",
-						"action":{
-							"funct":"addInventory"
+					"x":310, "y":365,  "src":"css/img/key.png", "id":"keySalleSejour", "listOn":[
+						{
+							"verb":"prendre",
+							"action":{
+								"funct":"addInventory"
+							}
 						}
-					}
+					]
 				}
 			]
 		},
 		{
 			"id":"comptoirAccueil",
 			"background":"css/img/comptoirAccueil.svg.png",
-			"listArea":[
+			"listRectArea":[
 
 			]
 

@@ -50,6 +50,29 @@ background:#fff;
 border:10px solid gray;
 }
 
+#verbs{
+	margin:auto;
+
+	margin-top:20px;
+
+	width:614px;
+	height:30px;
+}
+#verbs a{
+	display:block;
+	float:left;
+	border:1px solid white;
+	margin-right: 4px;
+	padding:5px;
+	color:white;
+	text-decoration: none;
+}
+
+#verbs a.selected{
+	border:1px solid darkblue;
+	background:darkblue;
+}
+
 #inventory{
 	margin:auto;
 
@@ -92,9 +115,7 @@ text-align:center;
 color:#fff;
 }
 
-svg{
-display:none;
-}
+
 
 #myCode{
 background:#6fa094;

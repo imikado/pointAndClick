@@ -1,11 +1,110 @@
 
 function Game(){
 	this.tRoom=Array();
+	this.roomToStart='';
+
+	this.verbSelected='';
+	this.itemSelected='';
+	this.withSelected='';
+
+	this.roomSelected='';
+
+	this.tEvent=Array();
+	this.tInventory=Array();
+	this.tImage=Array();
+
+	this.tVerbs=Array();
 }
 Game.prototype={
+
+	"selectVerb":function(verb){
+		this.verbSelected=verb;
+
+		this.processListVerbs(this.tVerbs)
+	},
+	"resetSelection":function(){
+			this.verbSelected='';
+			this.withSelected='';
+			this.itemSelected='';
+
+			this.processListVerbs(this.tVerbs);
+	},
+	"selectItem":function(item){
+		this.itemSelected=item;
+
+		if(this.getEvent([this.verbSelected,this.itemSelected]) ){
+			this.executeAction(this.getEvent([this.verbSelected,this.itemSelected]) );
+		}else if(this.getEvent([this.verbSelected,this.withSelected,this.itemSelected]) ){
+			this.executeAction(this.getEvent([this.verbSelected,this.withSelected,this.itemSelected]) );
+		}
+
+		this.resetSelection();
+	},
+	"executeAction":function(tAction){
+		if(tAction){
+			for(var i in tAction){
+
+				var oAction=tAction[i];
+
+				if(oAction.funct=='addInventory'){
+					oGame.addInventory(oAction.id);
+
+					oGame.deleteImage(oAction.id);
+				}
+			}
+		}
+
+	},
+
+	"deleteImage":function(id){
+
+		this.tRoom[this.roomSelected].deleteImage(id);
+
+		this.loadRoom(this.roomSelected);
+
+	},
+
+	"addInventory":function(id){
+		this.tInventory.push(id);
+
+		console.log('add '+id);
+
+		var html='';
+		for(var i in this.tInventory){
+			html+='<img src="'+this.tImage[ this.tInventory[i] ].src+'"/>';
+		}
+
+		var divInventory=getById('inventory');
+		divInventory.innerHTML=html;
+	},
+	"selectWith":function(with_){
+		this.withSelected=with_;
+	},
+
+	"addEvent":function(tKey,oAction){
+
+		if(!this.tEvent[ tKey.join('__') ]){
+			this.tEvent[ tKey.join('__') ]=Array();
+		}
+
+		this.tEvent[ tKey.join('__') ].push(oAction);
+	},
+
+	"getEvent":function(tKey){
+		if(this.tEvent[ tKey.join('__') ]){
+			return this.tEvent[ tKey.join('__') ];
+		}
+		return null;
+	},
+
 	"process":function(oData){
 		this.processIntro(oData.intro);
 		this.processListRooms(oData.listRoom);
+		this.processListVerbs(oData.listVerbs);
+
+		this.tVerbs=oData.listVerbs;
+
+		this.roomToStart=oData.roomToStart;
 	},
 	"processIntro":function(oIntro){
 		var divIntro=getById('intro');
@@ -15,51 +114,120 @@ Game.prototype={
 		divIntro.style.width=oIntro.width;
 		divIntro.style.height=oIntro.height;
 	},
+	"processListVerbs":function(tVerbs){
+		var divVerbs=getById('verbs');
+		if(divVerbs){
+			var html='';
+			for(var i in tVerbs){
+				html+='<a href="#" ';
+
+				if(this.verbSelected==tVerbs[i]){
+					html+= 'class="selected"';
+				}
+
+				html+=' onclick="oGame.selectVerb(\''+tVerbs[i]+'\')">'+tVerbs[i]+'</a>';
+			}
+			divVerbs.innerHTML=html;
+		}
+	},
 	"processListRooms":function(tRoom){
 		for(var i in tRoom){
 			var oJsonRoom=tRoom[i];
-			
+
 			var oRoom=new Room(oJsonRoom.id);
 			oRoom.setBackground(oJsonRoom.background);
-			
+
 			for(var j in oJsonRoom.listRectArea){
-				
+
 				var jsonRectArea=oJsonRoom.listRectArea[j];
-				
-				var oRectArea=new RectArea();
-				oRectArea.setCoord(jsonRectArea.x,jsonRectArea.y);
-				oRectArea.setDimensions(jsonRectArea.width,jsonRectArea.height);
-				
-				if(jsonRectArea.listOn){
-				
-					for(var k in jsonRectArea.listOn){
-						
-						var jsonOn=jsonRectArea.listOn[k];
-						
-						var oOn=new On();
-						oOn.setVerb(jsonOn.verb);
-						if(jsonOn.with){
-							oOn.setWith(jsonOn.with);
-						}
-						oOn.setAction(jsonOn.action);
-						
-						oRectArea.addOn(oOn);
-						
-					}
-					
-				}
-				
-				oRoom.addRectArea(oRectArea);
-				
-				
+
+				oRoom.addRectArea(jsonRectArea);
+
+				this.processListEvent(jsonRectArea.listOn,jsonRectArea.id);
+
+
 			}
-			
-			this.tRoom.push(oRoom);
-			
+
+			for(var k in oJsonRoom.listImage){
+
+				var jsonImage=oJsonRoom.listImage[k];
+
+				oRoom.addImage(jsonImage);
+
+				this.processListEvent(jsonImage.listOn,jsonImage.id);
+
+				this.tImage[jsonImage.id]=jsonImage;
+
+			}
+			this.tRoom[oJsonRoom.id]=oRoom;
+
 		}
 	},
+	"processListEvent":function(listOn,id){
+		if(listOn){
+			for(var i in listOn){
+
+				var oOn=listOn[i];
+				oOn.action.id=id;
+
+				this.addEvent( [oOn.verb,id],oOn.action);
+			}
+		}
+	},
+	"hide":function(id){
+		var div=getById(id);
+		div.style.display='none';
+	},
+	"show":function(id){
+		var div=getById(id);
+		div.style.display='block';
+	},
 	"start":function(){
-		
+		this.hide('intro');
+		this.show('game');
+
+		this.loadRoom(this.roomToStart);
+	},
+	"loadRoom":function(room){
+
+		this.roomSelected=room;
+
+		console.log(room);
+
+		var oRoom=this.tRoom[room];
+
+		var divRoom=getById('game');
+		divRoom.style.background='url(\''+oRoom.background+'\')';
+
+		console.log(oRoom);
+
+		var oSvg=new Svg();
+
+		if(oRoom.tImage){
+			console.log(oRoom.tImage);
+			for(var i in oRoom.tImage){
+
+				console.log('boucle image');
+
+				var oImage=oRoom.tImage[i];
+
+				oSvg.addImage({
+					"id":oImage.id,
+					"class":"clickable",
+					"x":oImage.x,
+					"y":oImage.y,
+					"opacity":1,
+					"src":oImage.src
+				});
+
+
+			}
+		}
+
+		var html=oSvg.getSvg();
+
+		divRoom.innerHTML=html;
+
 	}
 
 
@@ -79,53 +247,22 @@ Room.prototype={
 	},
 	"addImage":function(oImage){
 		this.tImage.push(oImage);
+	},
+	"deleteImage":function(id){
+		var newListImage=Array();
+		for(var i in this.tImage){
+			if(this.tImage[i].id!=id){
+				newListImage.push(this.tImage[i]);
+			}
+		}
+		this.tImage=newListImage;
 	}
 };
 
-function RectArea(){
-	this.x=0;
-	this.y=0;
-	this.width=0;
-	this.height=0;
-	this.tOn=Array();
-}
-RectArea.prototype={
-	"setCoord":function(x,y){
-		this.x=x;
-		this.y=y;
-	},
-	"setDimensions":function(width,height){
-		this.width=width;
-		this.height=height;
-	},
-	"addOn":function(oOn){
-		this.tOn.push(oOn);
-	},
-};
 
-function Image(){
-	this.x=0;
-	this.y=0;
-	this.width=0;
-	this.height=0;
-	this.src='';
-	this.tOn=Array();
-}
-Image.prototype={
-	"setCoord":function(x,y){
-		this.x=x;
-		this.y=y;
-	},
-	"setSrc":function(src){
-		this.src=src;
-	},
-	"addOn":function(oOn){
-		this.tOn.push(oOn);
-	},
-};
 
 function On(){
-	
+
 }
 On.prototype={
 	"setVerb":function(sVerb){
@@ -146,6 +283,22 @@ function getById(id_){
 
 var oGame=new Game();
 
+
+function Svg(){
+	this.svg='';
+}
+Svg.prototype={
+	"addImage":function(oImage){
+		this.svg+='<image class="clickable" ';
+
+		this.svg+=' onclick="oGame.selectItem(\''+oImage.id+'\')" x="'+oImage.x+'" y="'+oImage.y+'"   opacity="'+oImage.opacity+'" xlink:href="'+oImage.src+'" />';
+
+	},
+	"getSvg":function(){
+
+		return '<svg width="600" height="400" xmlns:xlink= "http://www.w3.org/1999/xlink"><style>.clickable { cursor: pointer; }</style>'+this.svg+'</svg>';
+	}
+};
 
 
 function startIntro(){

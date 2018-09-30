@@ -35,13 +35,19 @@ Game.prototype={
 
 		this.itemSelected=item;
 
-		if(this.getEvent([this.verbSelected,this.itemSelected]) ){
+		if(this.verbSelected==''){
+			this.message('Vous devez selectionner un verbe');
+		}else if(this.getEvent([this.verbSelected,this.itemSelected]) ){
 			this.executeAction(this.getEvent([this.verbSelected,this.itemSelected]) );
 		}else if(this.getEvent([this.verbSelected,this.withSelected,this.itemSelected]) ){
 			this.executeAction(this.getEvent([this.verbSelected,this.withSelected,this.itemSelected]) );
+		}else{
+			this.messageError('Je ne pense pas :(');
 		}
 
 		this.resetSelection();
+
+
 	},
 	"executeAction":function(tAction){
 		if(tAction){
@@ -56,6 +62,8 @@ Game.prototype={
 				}else if(oAction.funct=='loadRoom'){
 					oGame.loadRoom(oAction.room);
 
+				}else if(oAction.funct=='message'){
+					oGame.message(oAction.message);
 				}
 			}
 		}
@@ -301,7 +309,13 @@ Game.prototype={
 
 		divRoom.innerHTML=html;
 
-	}
+	},
+	"message":function(text_){
+		modalMessage(text_);
+	},
+	"messageError":function(text_){
+		modalMessageError(text_);
+	},
 
 
 };
@@ -389,4 +403,24 @@ function startIntro(){
 		var oData = oRequest.response;
 		oGame.process(oData);
 	}
+}
+
+function modalMessage(text_){
+ showObject('myModal');
+ getById('myModalTxt').innerHTML=text_;
+ getById('myModalContent').style.border='8px solid darkgreen';
+}
+
+function modalMessageError(text_){
+ showObject('myModal');
+ getById('myModalTxt').innerHTML=text_;
+ getById('myModalContent').style.border='8px solid darkred';
+}
+
+
+function showObject(id){
+	getById(id).style.display='block';
+}
+function hideObject(id){
+	getById(id).style.display='none';
 }

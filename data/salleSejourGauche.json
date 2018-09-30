@@ -27,6 +27,13 @@
 					"action":{
 						"funct":"addInventory"
 					}
+				},
+				{
+					"verb":"observer",
+					"action":{
+						"funct":"message",
+						"message":"C'est la clef de Mr XX"
+					}
 				}
 			]
 		},

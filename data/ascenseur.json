@@ -1,0 +1,83 @@
+{
+	"id":"ascenseur",
+	"background":"css/img/ascenseur.svg.png",
+
+	"listImage":[
+
+		{
+			"id":"boutonRDC",
+			"x":360,"y":200,
+			"src":"css/img/boutonRDC.png",
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"loadRoom",
+						"room":"ascenseurRDC"
+					}
+				}
+			]
+		},
+
+		{
+			"id":"bouton1",
+			"x":360,"y":174,
+			"src":"css/img/bouton1.png",
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"loadRoom",
+						"room":"chambresEtage1"
+					}
+				}
+			]
+		},
+
+		{
+			"id":"bouton2",
+			"x":360,"y":148,
+			"src":"css/img/bouton2.png",
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"loadRoom",
+						"room":"chambresEtage2"
+					}
+				}
+			]
+		},
+
+		{
+			"id":"bouton3",
+			"x":360,"y":122,
+			"src":"css/img/bouton3.png",
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"loadRoom",
+						"room":"chambresEtage3"
+					}
+				}
+			]
+		},
+
+		{
+			"id":"ascenseurZoom",
+			"x":120,"y":12,
+			"src":"css/img/ascenseurZoom.png",
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"loadRoom",
+						"room":"ascenseur"
+					}
+				}
+			]
+		}
+
+	]
+}

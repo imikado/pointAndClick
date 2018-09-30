@@ -6,7 +6,7 @@
 
 		{
 			"id":"leftArrow",
-			"x":520,"y":340,
+			"x":20,"y":340,
 			"src":"css/img/leftArrow.png",
 			"listOn":[
 				{

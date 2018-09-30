@@ -1,0 +1,50 @@
+{
+	"id":"salleSejourEntree",
+	"background":"css/img/salleSejourEntree.svg.png",
+
+	"listImage":[
+
+		{
+			"id":"porte",
+			"x":440,"y":56,
+			"src":"css/img/porte.png",
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"loadRoom",
+						"room":"comptoirAccueil"
+					}
+				}
+			]
+		},
+		{
+			"id":"porteManteau",
+			"x":220,"y":240,
+			"src":"css/img/porteManteau.png",
+			"listOn":[
+				{
+					"verb":"observer",
+					"action":{
+						"funct":"message",
+						"message":"Le porte manteau est cassee, il semble qu'il manque une vis"
+					}
+				}
+			]
+		},
+		{
+			"id":"leftArrow",
+			"x":20,"y":340,
+			"src":"css/img/leftArrow.png",
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"loadRoom",
+						"room":"salleSejourDroite"
+					}
+				}
+			]
+		}
+	]
+}

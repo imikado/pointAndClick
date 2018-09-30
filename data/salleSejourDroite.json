@@ -1,0 +1,48 @@
+{
+	"id":"salleSejourDroite",
+	"background":"css/img/salleSejourDroite.svg.png",
+
+	"listImage":[
+		{
+			"id":"keySalleSejourB",
+			"x":140, "y":195,
+			"src":"css/img/key.png",
+			"listOn":[
+				{
+					"verb":"prendre",
+					"action":{
+						"funct":"addInventory"
+					}
+				}
+			]
+		},
+		{
+			"id":"rightArrow",
+			"x":520,"y":340,
+			"src":"css/img/rightArrow.png",
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"loadRoom",
+						"room":"salleSejourEntree"
+					}
+				}
+			]
+		},
+		{
+			"id":"leftArrow",
+			"x":20,"y":340,
+			"src":"css/img/leftArrow.png",
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"loadRoom",
+						"room":"salleSejourGauche"
+					}
+				}
+			]
+		}
+	]
+}

@@ -11,56 +11,6 @@
 			"<p>Tous les invites de ce soir dorment dans cet Hotel, le directeur vous a design&eacute; pour le retrouver ainsi que son voleur</p>"
 		]
 	},
-	"roomToStart":"salleSejour",
-	"listRoom":[
-		{
-			"id":"salleSejour",
-			"background":"css/img/salleSejour.svg.png",
-			"listRectArea":[
-				{
-					"x":400, "y":120, "width":20, "height":80, "listOn":[
-																		{
-																			"verb":"aller",
-																			"action":{
-																					"funct":"loadRoom",
-																					"param":"comptoirAccueil"
-																				}
-																			}
-
-																		]
-				}
-			],
-			"listImage":[
-				{
-					"id":"keySalleSejour",
-					"x":140, "y":235,
-					"src":"css/img/key.png",
-					"listOn":[
-										{
-											"verb":"prendre",
-											"action":{
-												"funct":"addInventory"
-											}
-										}
-									],
-					"state":{
-						"off":{
-							"src":""
-						}
-					}
-				}
-			]
-		},
-		{
-			"id":"comptoirAccueil",
-			"background":"css/img/comptoirAccueil.svg.png",
-			"listRectArea":[
-
-			]
-
-		}
-
-
-	]
+	"roomToStart":"salleSejourGauche"
 
 }

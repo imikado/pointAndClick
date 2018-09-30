@@ -1,0 +1,38 @@
+{
+	"id":"comptoirAccueil",
+	"background":"css/img/comptoirAccueil.svg.png",
+
+	"listImage":[
+
+		{
+			"id":"rightArrow",
+			"x":520,"y":340,
+			"src":"css/img/rightArrow.png",
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"loadRoom",
+						"room":"ascenseurRDC"
+					}
+				}
+			]
+		},
+
+		{
+			"id":"porte",
+			"x":40,"y":56,
+			"src":"css/img/porte.png",
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"loadRoom",
+						"room":"salleSejourEntree"
+					}
+				}
+			]
+		}
+
+	]
+}

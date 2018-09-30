@@ -30,6 +30,9 @@ Game.prototype={
 			this.processListVerbs(this.tVerbs);
 	},
 	"selectItem":function(item){
+
+		console.log('selectItem '+item);
+
 		this.itemSelected=item;
 
 		if(this.getEvent([this.verbSelected,this.itemSelected]) ){
@@ -50,6 +53,9 @@ Game.prototype={
 					oGame.addInventory(oAction.id);
 
 					oGame.deleteImage(oAction.id);
+				}else if(oAction.funct=='loadRoom'){
+					oGame.loadRoom(oAction.room);
+
 				}
 			}
 		}
@@ -71,7 +77,8 @@ Game.prototype={
 
 		var html='';
 		for(var i in this.tInventory){
-			html+='<img src="'+this.tImage[ this.tInventory[i] ].src+'"/>';
+			var id=this.tInventory[i];
+			html+='<a href="" onclick="selectWith(\''+id+'\')"><img src="'+this.tImage[ id ].src+'"/></a>';
 		}
 
 		var divInventory=getById('inventory');
@@ -99,7 +106,7 @@ Game.prototype={
 
 	"process":function(oData){
 		this.processIntro(oData.intro);
-		this.processListRooms(oData.listRoom);
+		//this.processListRooms(oData.listRoom);
 		this.processListVerbs(oData.listVerbs);
 
 		this.tVerbs=oData.listVerbs;
@@ -130,6 +137,38 @@ Game.prototype={
 			divVerbs.innerHTML=html;
 		}
 	},
+
+	"processRoom":function(oJsonRoom){
+		var oRoom=new Room(oJsonRoom.id);
+		oRoom.setBackground(oJsonRoom.background);
+
+		for(var j in oJsonRoom.listRectArea){
+
+			var jsonRectArea=oJsonRoom.listRectArea[j];
+
+			oRoom.addRectArea(jsonRectArea);
+
+			//this.processListEvent(jsonRectArea.listOn,jsonRectArea.id);
+
+
+		}
+
+		for(var k in oJsonRoom.listImage){
+
+			var jsonImage=oJsonRoom.listImage[k];
+
+			oRoom.addImage(jsonImage);
+
+			//this.processListEvent(jsonImage.listOn,jsonImage.id);
+
+			this.tImage[jsonImage.id]=jsonImage;
+
+		}
+
+		this.tRoom[oJsonRoom.id]=oRoom;
+
+	},
+	/*
 	"processListRooms":function(tRoom){
 		for(var i in tRoom){
 			var oJsonRoom=tRoom[i];
@@ -163,6 +202,7 @@ Game.prototype={
 
 		}
 	},
+	*/
 	"processListEvent":function(listOn,id){
 		if(listOn){
 			for(var i in listOn){
@@ -188,7 +228,38 @@ Game.prototype={
 
 		this.loadRoom(this.roomToStart);
 	},
+	"readRoom":function(room){
+		var requestURL='./data/'+room+'.json';
+
+		console.log("readRoom "+requestURL);
+
+		var oRequest = new XMLHttpRequest();
+		oRequest.open('GET', requestURL,true);
+		oRequest.responseType = 'json';
+		oRequest.send();
+
+		oRequest.onload = function() {
+			var oData = oRequest.response;
+
+			if(null==oData){
+				alert('Error on load '+requestURL);
+			}
+
+			oGame.processRoom(oData);
+			oGame.loadRoom(oData.id);
+		}
+	},
+	"resetRoom":function(){
+		this.tEvent=Array();
+	},
 	"loadRoom":function(room){
+
+		if(!this.tRoom[room]){
+			this.readRoom(room);
+			return;
+		}
+
+		this.resetRoom();
 
 		this.roomSelected=room;
 
@@ -210,6 +281,8 @@ Game.prototype={
 				console.log('boucle image');
 
 				var oImage=oRoom.tImage[i];
+
+				this.processListEvent(oImage.listOn,oImage.id);
 
 				oSvg.addImage({
 					"id":oImage.id,

@@ -1,0 +1,38 @@
+{
+	"id":"ascenseurRDC",
+	"background":"css/img/ascenseurRDC.svg.png",
+
+	"listImage":[
+
+		{
+			"id":"leftArrow",
+			"x":520,"y":340,
+			"src":"css/img/leftArrow.png",
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"loadRoom",
+						"room":"comptoirAccueil"
+					}
+				}
+			]
+		},
+
+		{
+			"id":"ascenseur",
+			"x":250,"y":74,
+			"src":"css/img/ascenseur.png",
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"loadRoom",
+						"room":"ascenseur"
+					}
+				}
+			]
+		}
+
+	]
+}

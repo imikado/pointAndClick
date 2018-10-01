@@ -1,0 +1,66 @@
+{
+	"id":"chambresEtage1",
+	"background":"css/img/chambresEtage1.svg.png",
+	"listImage":[
+		{
+			"id":"porte101",
+			"src":"css/img/porte101.png",
+			"x":40,
+			"y":78,
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"message",
+						"message":"La porte est ferme a clef"
+					}
+				}
+			]
+		},
+		{
+			"id":"porte102",
+			"src":"css/img/porte102.png",
+			"x":240,
+			"y":78,
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"message",
+						"message":"La porte est ferme a clef"
+					}
+				}
+			]
+		},
+		{
+			"id":"porte103",
+			"src":"css/img/porte103.png",
+			"x":440,
+			"y":78,
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"message",
+						"message":"La porte est ferme a clef"
+					}
+				}
+			]
+		},
+
+		{
+			"id":"leftArrow",
+			"x":20,"y":340,
+			"src":"css/img/leftArrow.png",
+			"listOn":[
+				{
+					"verb":"aller",
+					"action":{
+						"funct":"loadRoom",
+						"room":"ascenseur"
+					}
+				}
+			]
+		}
+	]
+}

@@ -1,5 +1,5 @@
 {
-	"listVerbs":["observer","aller","parler","prendre"],
+	"listVerbs":["observer","aller","parler","prendre","utiliser"],
 	"intro":{
 		"background":"css/img/hotelIntro.svg.png",
 		"width":"560px",

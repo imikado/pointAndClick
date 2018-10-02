@@ -14,8 +14,21 @@
 						"funct":"message",
 						"message":"La porte est ferme a clef"
 					}
+				},
+				{
+					"verb":"utiliser",
+					"with":"key101",
+					"action":{
+						"funct":"setState",
+						"state":"open"
+					}
 				}
-			]
+			],
+			"listState":{
+				"open":{
+					"background":"css/img/porte101opened.png"
+				}
+			}
 		},
 		{
 			"id":"porte102",

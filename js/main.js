@@ -37,10 +37,10 @@ Game.prototype={
 
 		if(this.verbSelected==''){
 			this.message('Vous devez selectionner un verbe');
-		}else if(this.getEvent([this.verbSelected,this.itemSelected]) ){
-			this.executeAction(this.getEvent([this.verbSelected,this.itemSelected]) );
 		}else if(this.getEvent([this.verbSelected,this.withSelected,this.itemSelected]) ){
 			this.executeAction(this.getEvent([this.verbSelected,this.withSelected,this.itemSelected]) );
+		}else if(this.getEvent([this.verbSelected,this.itemSelected]) ){
+			this.executeAction(this.getEvent([this.verbSelected,this.itemSelected]) );
 		}else{
 			this.messageError('Je ne pense pas :(');
 		}
@@ -64,6 +64,8 @@ Game.prototype={
 
 				}else if(oAction.funct=='message'){
 					oGame.message(oAction.message);
+				}else if(oAction.funct=='setState'){
+					oGame.setState(oAction.id,oAction.state);
 				}
 			}
 		}
@@ -86,7 +88,7 @@ Game.prototype={
 		var html='';
 		for(var i in this.tInventory){
 			var id=this.tInventory[i];
-			html+='<a href="" onclick="selectWith(\''+id+'\')"><img src="'+this.tImage[ id ].src+'"/></a>';
+			html+='<a href="#" onclick="oGame.selectWith(\''+id+'\');return false"><img src="'+this.tImage[ id ].src+'"/></a>';
 		}
 
 		var divInventory=getById('inventory');
@@ -125,7 +127,7 @@ Game.prototype={
 		var divIntro=getById('intro');
 
 		divIntro.innerHTML=oIntro.text.join("");
-		//divIntro.style.background="url('"+oIntro.background+"') bottom no-repeat";
+		divIntro.style.background="url('"+oIntro.background+"') bottom no-repeat";
 		divIntro.style.width=oIntro.width;
 		divIntro.style.height=oIntro.height;
 	},
@@ -218,7 +220,14 @@ Game.prototype={
 				var oOn=listOn[i];
 				oOn.action.id=id;
 
-				this.addEvent( [oOn.verb,id],oOn.action);
+				if(oOn.with){
+					this.addEvent( [oOn.verb,oOn.with,id],oOn.action);
+
+				}else{
+					this.addEvent( [oOn.verb,id],oOn.action);
+
+				}
+
 			}
 		}
 	},

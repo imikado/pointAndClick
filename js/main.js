@@ -18,6 +18,8 @@ function Game(){
 Game.prototype={
 
 	"selectVerb":function(verb){
+		this.resetSelection();
+
 		this.verbSelected=verb;
 
 		this.processListVerbs(this.tVerbs)
@@ -28,6 +30,12 @@ Game.prototype={
 			this.itemSelected='';
 
 			this.processListVerbs(this.tVerbs);
+			this.listInventory();
+	},
+	"selectWith":function(with_){
+		this.withSelected=with_;
+
+		this.listInventory();
 	},
 	"selectItem":function(item){
 
@@ -56,28 +64,38 @@ Game.prototype={
 				var oAction=tAction[i];
 
 				if(oAction.funct=='addInventory'){
-					oGame.addInventory(oAction.id);
+					this.addInventory(oAction.id);
 
-					oGame.deleteImage(oAction.id);
+					this.deleteImage(oAction.id);
 				}else if(oAction.funct=='loadRoom'){
-					oGame.loadRoom(oAction.room);
+					this.loadRoom(oAction.room);
 
 				}else if(oAction.funct=='message'){
-					oGame.message(oAction.message);
+					this.message(oAction.message);
 				}else if(oAction.funct=='setState'){
-					oGame.setState(oAction.id,oAction.state);
+					this.setState(oAction.room,oAction.id,oAction.state);
+
+					this.reloadRoom();
 				}
 			}
 		}
 
 	},
 
+	"setState":function(room,id,state){
+		this.tRoom[room].setState(id,state);
+	},
+
 	"deleteImage":function(id){
 
 		this.tRoom[this.roomSelected].deleteImage(id);
 
-		this.loadRoom(this.roomSelected);
+		this.reloadRoom();
 
+	},
+
+	"reloadRoom":function(){
+			this.loadRoom(this.roomSelected);
 	},
 
 	"addInventory":function(id){
@@ -85,18 +103,26 @@ Game.prototype={
 
 		console.log('add '+id);
 
+		this.listInventory();
+	},
+
+	"listInventory":function(){
 		var html='';
 		for(var i in this.tInventory){
 			var id=this.tInventory[i];
-			html+='<a href="#" onclick="oGame.selectWith(\''+id+'\');return false"><img src="'+this.tImage[ id ].src+'"/></a>';
+			html+='<a ';
+
+			if(this.withSelected==id){
+				html+='class="selected"';
+			}
+
+			html+=' href="#" onclick="oGame.selectWith(\''+id+'\');return false"><img src="'+this.tImage[ id ].src+'"/></a>';
 		}
 
 		var divInventory=getById('inventory');
 		divInventory.innerHTML=html;
 	},
-	"selectWith":function(with_){
-		this.withSelected=with_;
-	},
+
 
 	"addEvent":function(tKey,oAction){
 
@@ -213,12 +239,13 @@ Game.prototype={
 		}
 	},
 	*/
-	"processListEvent":function(listOn,id){
+	"processListEvent":function(listOn,id,room){
 		if(listOn){
 			for(var i in listOn){
 
 				var oOn=listOn[i];
 				oOn.action.id=id;
+				oOn.action.room=room;
 
 				if(oOn.with){
 					this.addEvent( [oOn.verb,oOn.with,id],oOn.action);
@@ -299,7 +326,7 @@ Game.prototype={
 
 				var oImage=oRoom.tImage[i];
 
-				this.processListEvent(oImage.listOn,oImage.id);
+				this.processListEvent(oImage.listOn,oImage.id,room);
 
 				oSvg.addImage({
 					"id":oImage.id,
@@ -352,6 +379,27 @@ Room.prototype={
 			}
 		}
 		this.tImage=newListImage;
+	},
+	"setState":function(id,state){
+		var newListImage=Array();
+		for(var i in this.tImage){
+
+			var oImage=this.tImage[i];
+
+			if(oImage.id==id){
+				var oState=oImage.listState[state];
+
+				console.log(oState);
+
+				for(var key in oState ){
+					oImage[key]=oState[key];
+				}
+
+			}
+			newListImage.push(oImage);
+		}
+		this.tImage=newListImage;
+
 	}
 };
 

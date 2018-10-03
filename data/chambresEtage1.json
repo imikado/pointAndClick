@@ -26,7 +26,7 @@
 			],
 			"listState":{
 				"open":{
-					"background":"css/img/porte101opened.png"
+					"src":"css/img/porte101opened.png"
 				}
 			}
 		},

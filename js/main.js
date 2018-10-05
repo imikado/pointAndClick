@@ -73,7 +73,7 @@ Game.prototype={
 				}else if(oAction.funct=='message'){
 					this.message(oAction.message);
 				}else if(oAction.funct=='setState'){
-					this.setState(oAction.room,oAction.id,oAction.state);
+					this.setState(oAction.fromRoom,oAction.id,oAction.state);
 
 					this.reloadRoom();
 				}
@@ -245,7 +245,7 @@ Game.prototype={
 
 				var oOn=listOn[i];
 				oOn.action.id=id;
-				oOn.action.room=room;
+				oOn.action.fromRoom=room;
 
 				if(oOn.with){
 					this.addEvent( [oOn.verb,oOn.with,id],oOn.action);
@@ -307,7 +307,7 @@ Game.prototype={
 
 		this.roomSelected=room;
 
-		console.log(room);
+		console.log('loadRoom '+room);
 
 		var oRoom=this.tRoom[room];
 

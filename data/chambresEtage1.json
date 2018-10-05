@@ -26,7 +26,16 @@
 			],
 			"listState":{
 				"open":{
-					"src":"css/img/porte101opened.png"
+					"src":"css/img/porte101opened.png",
+					"listOn":[
+						{
+							"verb":"aller",
+							"action":{
+								"funct":"loadRoom",
+								"room":"room101"
+							}
+						}
+					]
 				}
 			}
 		},
